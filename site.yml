@@ -1,0 +1,11 @@
+---
+
+- hosts: pdi_cluster
+  gather_facts: yes
+  # become: yes
+  roles:
+    - role: prereq
+    - role: download
+    - role: java
+    - role: pdi
+    - role: jenkins

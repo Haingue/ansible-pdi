@@ -1,0 +1,13 @@
+---
+- name: Create PDI folder for this version
+  file: 
+    path: "{{ pdi_path }}"
+    state: directory
+    
+- name: Unarchive  PDI files already on the remote machine
+  ansible.builtin.unarchive:
+    src: "{{ pdi_folder_path }}/pdi-ce-{{ pdi_version }}.zip"
+    dest: "{{ pdi_path }}"
+    remote_src: yes
+
+- include: "{{ansible_system|lower}}.yml"

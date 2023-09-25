@@ -1,0 +1,4 @@
+---
+jdk_version: "openjdk 17.0.7 2023-04-18"
+jdk_path: "/usr/lib/jvm/java-17-openjdk-amd64/bin/java"
+pdi_version: "9.4.0.0-343"

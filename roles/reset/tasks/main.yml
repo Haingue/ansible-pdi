@@ -1,0 +1,34 @@
+---
+
+- name: Remove PDI _PENTAHO_JAVA
+  shell: unset _PENTAHO_JAVA
+  register: sortie
+
+- name: Remove PDI _PENTAHO_JAVA_HOME
+  shell: unset _PENTAHO_JAVA_HOME
+  register: sortie
+
+- name: start jenkins
+  systemd:
+    name: jenkins
+    state: stopped
+  ignore_errors: true
+
+- name: install jenkins
+  apt:
+    name: jenkins
+    state: absent
+
+- name: Remove service files, binaries and data
+  file:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ pdi_folder_path }}/pdi-ce-{{ pdi_version }}.zip"
+    - "{{ pdi_path }}"
+
+- name: Remove Jenkins.repo
+  file:
+    name: "{{ item }}"
+    state: absent
+  with_items: "/etc/apt/sources.list.d/jenkins.list"

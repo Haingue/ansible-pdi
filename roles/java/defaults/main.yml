@@ -1,0 +1,9 @@
+---
+# linux
+java_apt_package: openjdk-11-jdk
+java_yum_package: java-1.8.0-openjdk
+
+# windows
+jdk_package: jdk11
+java_major_version: 8.0
+java_minor_version: 162

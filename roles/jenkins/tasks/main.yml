@@ -1,0 +1,55 @@
+---
+# - name: Pull an image
+#   containers.podman.podman_image:
+#     name: {{ jenkins_image }}
+# - name: Re-create a jenkins container
+#   containers.podman.podman_container:
+#     name: sarthak
+#     image: {{ jenkins_image }}
+#     state: started
+#     detach: true
+#     exposed_ports:
+#       - {{ jenkins_port }}
+#     ports:
+#       - {{ jenkins_port }}:{{ jenkins_port }}
+#     volumes: /home/:/usr/local/apache2/htdocs/
+
+- name: Add jenkins.repo key
+  get_url:
+    url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+    dest: /usr/share/keyrings/jenkins-keyring.asc
+
+- name: Add jenkins.repo
+  apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/"
+    state: present
+    filename: jenkins
+
+- name: install jenkins
+  apt:
+    name: jenkins
+    state: present
+    update_cache: true
+
+- name: start jenkins
+  systemd:
+    name: jenkins
+    state: started
+
+- name: enable jenkins
+  systemd:
+    name: jenkins
+    enabled: true
+
+- name: sleep for 30 seconds and continue with play
+  wait_for: timeout=30
+  delegate_to: localhost
+
+- name: init password jenkin
+  shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+  changed_when: false
+  register: result
+
+- name: print init password jenkins
+  debug:
+    var: result.stdout

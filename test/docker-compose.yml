@@ -1,0 +1,19 @@
+version: '3'
+services:
+  etl_1:
+    build: .
+    networks:
+      - etl
+    ports:
+      - '2022:22'
+      - '2080:8080'
+  etl_2:
+    build: .
+    networks:
+      - etl
+    ports:
+      - '3022:22'
+      - '3080:8080'
+networks:
+  etl:
+    driver: bridge

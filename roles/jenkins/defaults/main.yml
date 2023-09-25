@@ -1,0 +1,4 @@
+---
+# jenkins_image: jenkins
+jenkins_port: 8080
+jenkins_managment_port: 5000

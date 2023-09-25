@@ -1,0 +1,20 @@
+---
+- name: Create PDI folder
+  file: 
+    path: "{{ pdi_folder_path }}"
+    state: directory
+
+- name: Check PDI Archive existence
+  stat: path={{pdi_folder_path}}/pdi-ce-{{ pdi_version }}.zip
+  register: archive_exist
+
+- name: Download PDI
+  when: archive_exist.stat.exists == False
+  get_url:
+    url: https://privatefilesbucket-community-edition.s3.us-west-2.amazonaws.com/{{ pdi_version }}/ce/client-tools/pdi-ce-{{ pdi_version }}.zip
+    #checksum: SHA1:bd89671a9d6f95948d3fbbfd33102710f3e004e0
+    #checksum: SHA1:https://privatefilesbucket-community-edition.s3.us-west-2.amazonaws.com/{{ pdi_version }}/ce/client-tools/pdi-ce-{{ pdi_version }}.zip.sum
+    dest: "{{ pdi_folder_path }}"
+    # owner: etl
+    # group: etl
+    # mode: 0755

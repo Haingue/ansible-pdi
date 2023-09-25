@@ -1,0 +1,5 @@
+---
+
+- name: set pdi env (Linux)
+  shell: cd {{ pdi_path }}/data-integration && ./set-pentaho-env.sh
+  register: sortie
